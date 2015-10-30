@@ -14,6 +14,12 @@ hexo edit <title> [folder] [-g | --gui]
 
 `-g` or `--gui` is an option to open files using an associated GUI editor, rather than your terminal editor set in $EDITOR
 
+## Installation
+
+```
+npm install --save hexo-easy-edit
+```
+
 ## Notes
 
 - It doesn't matter where in the hexo directory you are. As long as you're in one, the plugin will find the source dir
