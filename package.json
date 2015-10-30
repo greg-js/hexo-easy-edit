@@ -1,0 +1,27 @@
+{
+  "name": "hexo-easy-edit",
+  "description": "Hexo plugin for easily opening posts, drafts and pages from the command line in your favorite terminal or GUI editor",
+  "keywords": [
+    "hexo",
+    "plugin",
+    "edit"
+  ],
+  "version": "0.1.1",
+  "main": "index",
+  "author": "Gregory Scheerlinck <gregory.scheerlinck@gmail.com> (http://gregjs.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greg-js/hexo-easy-edit.git"
+  },
+  "license": {
+    "type": "MIT"
+  },
+  "peerDependencies": {
+    "hexo": "3.x"
+  },
+  "dependencies": {
+    "hexo-fs": "^0.1.4",
+    "inquirer": "^0.11.0",
+    "open": "0.0.5"
+  }
+}
