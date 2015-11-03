@@ -1,4 +1,4 @@
-var hexo_fs = require('hexo-fs');
+var hexoFs = require('hexo-fs');
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var path = require('path');
@@ -8,12 +8,14 @@ var open = require('open');
 module.exports = function(args) {
   var sourceDir = this.source_dir;
   var searchDir = sourceDir;
-  var editor = process.env.EDITOR;
+  var editor    = process.env.EDITOR;
 
-  var title = args._[0] || '';
-  var type = args._[1] || '';
+  var title     = args._[0] || '';
+  var reTitle  = new RegExp(title, 'i');
 
-  var gui = (args.g || !editor) ? true : false;
+  var type      = args._[1] || '';
+
+  var gui       = (args.g || !editor) ? true : false;
 
   var joined;
 
@@ -24,24 +26,26 @@ module.exports = function(args) {
 
   joined = path.join(searchDir, type);
 
-  hexo_fs.exists(joined).then(function(exists) {
+  hexoFs.exists(joined).then(function(exists) {
     if (exists) {
       fs.lstat(joined, function(err, stats) {
-        if (err) { throw err; }
+        if (err) {
+          throw err;
+        }
+
         searchDir = (stats.isDirectory()) ? joined : searchDir;
         processFiles();
       });
-    }
-    else {
+    } else {
       processFiles();
     }
   });
 
   function processFiles() {
     var selected;
-    hexo_fs.listDir(searchDir).then(function(files) {
+    hexoFs.listDir(searchDir).then(function(files) {
       files = files.filter(function(file) {
-        return file.substr(-3) == '.md' && new RegExp(title, 'i').test(file);
+        return file.substr(-3) == '.md' && reTitle.test(file);
       });
 
       if (files.length == 0) {
@@ -56,8 +60,8 @@ module.exports = function(args) {
             type: 'list',
             name: 'file',
             message: 'Select the file you wish to edit.',
-            choices: files
-          }
+            choices: files,
+          },
         ], function(answer) {
           selected = path.join(searchDir, answer.file);
           openFile(selected);
