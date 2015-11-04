@@ -6,13 +6,13 @@ var spawn = require('child_process').spawn;
 
 hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $EDITOR', {
   desc: 'Edit a post or draft with your favorite $EDITOR',
-  usage: '<title> [type]',
+  usage: '[title] [-t|--target subfolder] [-g|--gui]',
   arguments: [
-    {name: 'type',  desc: '[optional] Name of source subfolder to search. Will search entire source folder if no matching folder is found. Neither the leading \'_\' or the trailing \'s\' is required for specifying the _posts or _drafts folder.'},
-    {name: 'title', desc: '[required] (Part of) the title of a post. If more posts match this regex, a menu will be called.'},
+    {name: 'title', desc: '(Part of) the title of a post. If more posts match this regex, a menu will be called.'},
   ],
   options: [
-    {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR.'},
+    {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR. If no $EDITOR is found, it will fall back to gui mode.'},
+    {name: '-t, --target', desc: 'Name of source subfolder to search. Will search entire source folder if no matching folder is found. Neither the leading \'_\' or the trailing \'s\' is required for specifying the _posts or _drafts folder.'},
   ],
 }, require('./edit'));
 

@@ -10,21 +10,21 @@ module.exports = function(args) {
   var searchDir = sourceDir;
   var editor = process.env.EDITOR;
 
-  var title = args._[0] || '';
+  var title = args._.join(' ').replace(/ /g, '-') || '';
   var reTitle = new RegExp(title, 'i');
 
-  var type = args._[1] || '';
+  var target = args.t || args.target || '';
 
-  var gui = (args.g || !editor) ? true : false;
+  var gui = (args.g || args.gui || !editor) ? true : false;
 
   var joined;
 
-  if (/post|draft/.test(type)) {
-    type = (/^_/.test(type)) ? type : '_' + type;
-    type = (/s$/.test(type)) ? type : type + 's';
+  if (/post|draft/.test(target)) {
+    target = (/^_/.test(target)) ? target : '_' + target;
+    target = (/s$/.test(target)) ? target : target + 's';
   }
 
-  joined = path.join(searchDir, type);
+  joined = path.join(searchDir, target);
 
   hexoFs.exists(joined).then(function(exists) {
     if (exists) {
