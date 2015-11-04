@@ -8,14 +8,14 @@ var open = require('open');
 module.exports = function(args) {
   var sourceDir = this.source_dir;
   var searchDir = sourceDir;
-  var editor    = process.env.EDITOR;
+  var editor = process.env.EDITOR;
 
-  var title     = args._[0] || '';
-  var reTitle  = new RegExp(title, 'i');
+  var title = args._[0] || '';
+  var reTitle = new RegExp(title, 'i');
 
-  var type      = args._[1] || '';
+  var type = args._[1] || '';
 
-  var gui       = (args.g || !editor) ? true : false;
+  var gui = (args.g || !editor) ? true : false;
 
   var joined;
 
