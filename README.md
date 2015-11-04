@@ -14,6 +14,8 @@ hexo edit [title] [-t | --target subfolder] [-g | --gui]
 
 `-g` or `--gui` is an option to open files using an associated GUI editor, rather than your terminal editor set in $EDITOR
 
+This will also open any new post in your text editor when you create one using `hexo new ...`.
+
 ## Installation
 
 ```
