@@ -20,7 +20,7 @@ hexo.on('new', function(post) {
   if (!editor) {
     open(file);
   } else {
-    var edit = spawn(editor, [file], {stdio: 'inherit'});
+    var edit = spawn(editor, [post], {stdio: 'inherit'});
     edit.on('exit', process.exit);
   }
 });
