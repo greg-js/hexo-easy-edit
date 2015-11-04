@@ -6,7 +6,7 @@
     "plugin",
     "edit"
   ],
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "index",
   "author": "Gregory Scheerlinck <gregory.scheerlinck@gmail.com> (http://gregjs.com)",
   "repository": {
