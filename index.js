@@ -1,5 +1,9 @@
 'use strict';
 
+var open = require('open');
+var editor = process.env.EDITOR;
+var spawn = require('child_process').spawn;
+
 hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $EDITOR', {
   desc: 'Edit a post or draft with your favorite $EDITOR',
   usage: '<title> [type]',
@@ -11,3 +15,12 @@ hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $E
     {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR.'},
   ],
 }, require('./edit'));
+
+hexo.on('new', function(post) {
+  if (!editor) {
+    open(file);
+  } else {
+    var edit = spawn(editor, [file], {stdio: 'inherit'});
+    edit.on('exit', process.exit);
+  }
+});
