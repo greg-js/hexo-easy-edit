@@ -15,6 +15,8 @@ hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $E
   options: [
     {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR. If no $EDITOR is found, it will fall back to gui mode.'},
     {name: '-f, --folder', desc: 'Name of subfolder to filter on.'},
+    {name: '-t, --tag', desc: 'Tag to filter on.'},
+    {name: '-c, --category', desc: 'Category to filter on.'},
   ],
 }, edit);
 
@@ -46,6 +48,8 @@ function edit(args) {
 
     var title = args._.join(' ').replace(/ /g, '-') || '';
     var folder = args.f || args.folder || '';
+    var tag = args.t || args.tag || '';
+    var cat = args.c || args.category || '';
 
     var gui = args.g || args.gui || !editor;
 
@@ -61,6 +65,10 @@ function edit(args) {
     posts = (folder) ? filterFolder(posts) : posts;
 
     posts = (title) ? filterTitle(posts) : posts;
+
+    posts = (tag) ? filterTag(posts) : posts;
+
+    posts = (cat) ? filterCategory(posts) : posts;
 
     if (posts.length == 0) {
       console.log('Sorry, no posts matched your query. Exiting.');
@@ -95,6 +103,26 @@ function edit(args) {
       var reFolder = new RegExp(folder);
       return posts.filter(function(post) {
         return reFolder.test(post.source.substr(0, post.source.lastIndexOf(path.sep)));
+      });
+    }
+
+    // filter the posts using a tag if supplied
+    function filterTag(posts) {
+      var reTag = new RegExp(tag);
+      return posts.filter(function(post) {
+        return post.tags.data.some(function(postTag) {
+          return reTag.test(postTag.name);
+        });
+      });
+    }
+
+    // filter the posts using a category if supplied
+    function filterCategory(posts) {
+      var reCat = new RegExp(cat);
+      return posts.filter(function(post) {
+        return post.categories.data.some(function(postCat) {
+          return reCat.test(postCat.name);
+        });
       });
     }
 
