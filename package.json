@@ -16,9 +16,6 @@
   "license": {
     "type": "MIT"
   },
-  "peerDependencies": {
-    "hexo": "3.x"
-  },
   "dependencies": {
     "inquirer": "^0.11.0",
     "open": "0.0.5"
