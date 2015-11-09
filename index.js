@@ -1,5 +1,6 @@
 'use strict';
 
+var chalk = require('chalk');
 var open = require('open');
 var editor = process.env.EDITOR;
 var spawn = require('child_process').spawn;
@@ -38,65 +39,77 @@ hexo.on('new', function(post) {
 
 function edit(args) {
 
+  var title = args._.join(' ').replace(/ /g, '-') || '';
+  var folder = args.f || args.folder || '';
+  var tag = args.t || args.tag || '';
+  var cat = args.c || args.category || '';
+
+  var gui = args.g || args.gui || !editor;
+
   // load in the posts before processing them
   hexo.load().then(function() {
-    var posts = hexo.locals.get('posts').sort('-date').toArray();
-
     var sourceDir = hexo.source_dir;
     var searchDir = sourceDir;
     var editor = process.env.EDITOR;
 
-    var title = args._.join(' ').replace(/ /g, '-') || '';
-    var folder = args.f || args.folder || '';
-    var tag = args.t || args.tag || '';
-    var cat = args.c || args.category || '';
-
-    var gui = args.g || args.gui || !editor;
-
     var selected;
-    var titles;
+    var entries;
 
-    // allow omission of leading underscore or trailing s for the common _drafts and _posts folders
-    if (/post|draft/.test(folder)) {
-      folder = (/^_/.test(folder)) ? folder : '_' + folder;
-      folder = (/s$/.test(folder)) ? folder : folder + 's';
-    }
+    Promise.resolve(hexo.locals.get('posts').sort('-date').toArray()).then(function(posts) {
+      var filtered = posts.slice();
 
-    posts = (folder) ? filterFolder(posts) : posts;
+      // allow omission of leading underscore or trailing s for the common _drafts and _posts folders
+      if (/post|draft/.test(folder)) {
+        folder = (/^_/.test(folder)) ? folder : '_' + folder;
+        folder = (/s$/.test(folder)) ? folder : folder + 's';
+      }
 
-    posts = (title) ? filterTitle(posts) : posts;
+      filtered = (folder) ? filterFolder(filtered) : filtered;
 
-    posts = (tag) ? filterTag(posts) : posts;
+      filtered = (title) ? filterTitle(filtered) : filtered;
 
-    posts = (cat) ? filterCategory(posts) : posts;
+      filtered = (tag) ? filterTag(filtered) : filtered;
 
-    if (posts.length == 0) {
-      console.log('Sorry, no posts matched your query. Exiting.');
-      process.exit();
-    } else if (posts.length == 1) {
+      filtered = (cat) ? filterCategory(filtered) : filtered;
 
-      // no menu necessary if there is only one matching file
-      selected = path.join(searchDir, posts[0].source);
-      openFile(selected);
-    } else {
+      if (filtered.length == 0) {
+        console.log('Sorry, no filtered matched your query. Exiting.');
+        process.exit();
+      } else if (filtered.length == 1) {
 
-      // get a list of titles to put in the menu -- slugs are easy because it shows the subfolder and can easily be put back together with the searchDir to open it
-      titles = posts.map(function(post) {
-        return post.source;
-      });
-
-      inquirer.prompt([
-        {
-          type: 'list',
-          name: 'file',
-          message: 'Select the file you wish to edit.',
-          choices: titles,
-        },
-      ], function(answer) {
-        selected = path.join(sourceDir, answer.file);
+        // no menu necessary if there is only one matching file
+        selected = path.join(searchDir, filtered[0].source);
         openFile(selected);
-      });
-    }
+      } else {
+
+        // get a list of entries to put in the menu -- slugs are easy because it shows the subfolder and can easily be put back together with the searchDir to open it
+        entries = filtered.map(function(post) {
+          var entry = '';
+          var folder = post.source.substr(0, post.source.lastIndexOf(path.sep));
+          if (post.published) {
+            entry = ['[', chalk.gray(post.date.format('MM-DD-YYYY')), '] ', post.title, ' (', chalk.green(folder), ')'].join('');
+          } else {
+            entry = ['[', chalk.yellow.bgBlack('draft'), '] ', post.title].join('');
+          }
+
+          return entry;
+        });
+
+        inquirer.prompt([
+          {
+            type: 'list',
+            name: 'file',
+            message: 'Select the file you wish to edit.',
+            choices: entries,
+          },
+        ], function(answer) {
+          var pos = entries.indexOf(answer.file);
+          selected = path.join(sourceDir, filtered[pos].source);
+          openFile(selected);
+        });
+      }
+
+    });
 
     // filter the posts using a subfolder if supplied
     function filterFolder(posts) {
