@@ -162,6 +162,7 @@ function edit(args) {
     }
 
     // filter the posts using a before date if supplied
+    // dates don't make much sense for drafts, so they will be excluded
     function filterBefore(posts) {
       before = moment(before, 'MM-DD-YYYY', true);
       if (!before.isValid()) {
@@ -170,11 +171,12 @@ function edit(args) {
       }
 
       return posts.filter(function(post) {
-        return moment(post.date).isBefore(before);
+        return post.published && moment(post.date).isBefore(before);
       });
     }
 
     // filter the posts using an after date if supplied
+    // dates don't make much sense for drafts, so they will be excluded
     function filterAfter(posts) {
       after = moment(after, 'MM-DD-YYYY', true);
       if (!after.isValid()) {
@@ -183,7 +185,7 @@ function edit(args) {
       }
 
       return posts.filter(function(post) {
-        return moment(post.date).isAfter(after);
+        return post.published && moment(post.date).isAfter(after);
       });
     }
 
