@@ -1,6 +1,7 @@
 'use strict';
 
 var chalk = require('chalk');
+var moment = require('moment');
 var open = require('open');
 var editor = process.env.EDITOR;
 var spawn = require('child_process').spawn;
@@ -14,10 +15,12 @@ hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $E
     {name: 'title', desc: '(Part of) the title of a post. If more posts match this regex, a menu will be called.'},
   ],
   options: [
-    {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR. If no $EDITOR is found, it will fall back to gui mode.'},
-    {name: '-f, --folder', desc: 'Name of subfolder to filter on.'},
-    {name: '-t, --tag', desc: 'Tag to filter on.'},
+    {name: '-a, --after', desc: 'Only consider posts after this date (MM-DD-YYYY)'},
+    {name: '-b, --before', desc: 'Only consider posts before this date (MM-DD-YYYY)'},
     {name: '-c, --category', desc: 'Category to filter on.'},
+    {name: '-f, --folder', desc: 'Name of subfolder to filter on.'},
+    {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR. If no $EDITOR is found, it will fall back to gui mode.'},
+    {name: '-t, --tag', desc: 'Tag to filter on.'},
   ],
 }, edit);
 
@@ -43,6 +46,10 @@ function edit(args) {
   var folder = args.f || args.folder || '';
   var tag = args.t || args.tag || '';
   var cat = args.c || args.category || '';
+  var before = args.b || args.before || '';
+  before = before.replace(/\//g, '-');
+  var after = args.a || args.after || '';
+  after = after.replace(/\//g, '-');
 
   var gui = args.g || args.gui || !editor;
 
@@ -71,6 +78,10 @@ function edit(args) {
       filtered = (tag) ? filterTag(filtered) : filtered;
 
       filtered = (cat) ? filterCategory(filtered) : filtered;
+
+      filtered = (before) ? filterBefore(filtered) : filtered;
+
+      filtered = (after) ? filterAfter(filtered) : filtered;
 
       if (filtered.length == 0) {
         console.log('Sorry, no filtered matched your query. Exiting.');
@@ -136,6 +147,32 @@ function edit(args) {
         return post.categories.data.some(function(postCat) {
           return reCat.test(postCat.name);
         });
+      });
+    }
+
+    // filter the posts using a before date if supplied
+    function filterBefore(posts) {
+      before = moment(before, 'MM-DD-YYYY', true);
+      if (!before.isValid()) {
+        console.log(chalk.red('Before date is not valid (expecting `MM-DD-YYYY`), ignoring argument.'));
+        return posts;
+      }
+
+      return posts.filter(function(post) {
+        return moment(post.date).isBefore(before);
+      });
+    }
+
+    // filter the posts using an after date if supplied
+    function filterAfter(posts) {
+      after = moment(after, 'MM-DD-YYYY', true);
+      if (!after.isValid()) {
+        console.log(chalk.red('After date is not valid (expecting `MM-DD-YYYY`), ignoring argument.'));
+        return posts;
+      }
+
+      return posts.filter(function(post) {
+        return moment(post.date).isAfter(after);
       });
     }
 
