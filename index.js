@@ -18,6 +18,7 @@ hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $E
     {name: '-a, --after', desc: 'Only consider posts after this date (MM-DD-YYYY)'},
     {name: '-b, --before', desc: 'Only consider posts before this date (MM-DD-YYYY)'},
     {name: '-c, --category', desc: 'Category to filter on.'},
+    {name: '-d, --draft', desc: 'Only consider drafts'},
     {name: '-f, --folder', desc: 'Name of subfolder to filter on.'},
     {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR. If no $EDITOR is found, it will fall back to gui mode.'},
     {name: '-t, --tag', desc: 'Tag to filter on.'},
@@ -44,6 +45,7 @@ function edit(args) {
 
   var title = args._.join(' ').replace(/ /g, '-') || '';
   var folder = args.f || args.folder || '';
+  var draft = args.d || args.draft || '';
   var tag = args.t || args.tag || '';
   var cat = args.c || args.category || '';
   var before = args.b || args.before || '';
@@ -70,6 +72,8 @@ function edit(args) {
         folder = (/^_/.test(folder)) ? folder : '_' + folder;
         folder = (/s$/.test(folder)) ? folder : folder + 's';
       }
+
+      filtered = (draft) ? filterDrafts(filtered) : filtered;
 
       filtered = (folder) ? filterFolder(filtered) : filtered;
 
@@ -147,6 +151,13 @@ function edit(args) {
         return post.categories.data.some(function(postCat) {
           return reCat.test(postCat.name);
         });
+      });
+    }
+
+    // filter out all non-published posts
+    function filterDrafts(posts) {
+      return posts.filter(function(post) {
+        return !post.published;
       });
     }
 
