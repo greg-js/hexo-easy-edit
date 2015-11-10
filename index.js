@@ -24,7 +24,7 @@ hexo.extend.console.register('rename', 'Rename a post or draft', {
   usage: '<old name> <-n | --new new name> [-t | --title-only | -f | --filename-only]',
   arguments: [
     {name: '-n, --new', desc: '(required) The new name. Wrap in single or double quotes if the name includes spaces.'},
-    {name: '-t --title-only', desc: '(optional boolean) Only change the post title (not the filename)'},
-    {name: '-f --filename-only', desc: '(optional boolean) Only change the filename and the asset folder if it exists (not the post title)'},
+    {name: '-t --title', desc: '(optional boolean) Only change the post title (not the filename)'},
+    {name: '-f --filename', desc: '(optional boolean) Only change the filename and the asset folder if it exists (not the post title)'},
   ],
 }, require('./lib/rename'));
