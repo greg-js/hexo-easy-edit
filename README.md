@@ -5,7 +5,7 @@ This is a simple plugin for [Hexo](https://github.com/hexojs/hexo), a Node.js-ba
 It adds one command to the Hexo command-line interface (only usable when you are somewhere inside a hexo folder):
 
 ```
-hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --category category] [-d | --draft] [-f | --folder subfolder] [-g | --gui] [-t | --tag tag]
+hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --category | --categories CATEGORY] [-d | --draft | --drafts] [-f | --folder SUBFOLDER] [-g | --gui] [-p | --page | --pages] [-t | --tag | --tags TAG]
 ```
 
 `title` is a regular expression (case insensitive and spaces are allowed) for matching the title of a post
@@ -21,6 +21,8 @@ hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --c
 `-f` or `--folder` (optional) is (part of) the name of a subfolder in `hexo_dir/source` to narrow down your search if you have multiple post folders (for filtering on drafts, prefer to use `-d`)
 
 `-g` or `--gui` (optional) is an option to open files using an associated GUI editor, rather than your terminal editor set in $EDITOR
+
+`-p` or `--page` (optional) selects pages instead of posts
 
 `-t` or `--tag` (optional) allows you to filter your posts on tag
 
