@@ -2,7 +2,9 @@
 
 This is a simple plugin for [Hexo](https://github.com/hexojs/hexo), a Node.js-based static site generator/blog framework.
 
-It adds one command to the Hexo command-line interface (only usable when you are somewhere inside a hexo folder):
+It adds two command to the Hexo command-line interface (only usable when you are somewhere inside a hexo folder):
+
+## edit
 
 ```
 hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --category | --categories CATEGORY] [-d | --draft | --drafts] [-f | --folder SUBFOLDER] [-g | --gui] [-p | --page | --pages] [-t | --tag | --tags TAG]
@@ -26,7 +28,19 @@ hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --c
 
 `-t` or `--tag` (optional) allows you to filter your posts on tag
 
-Installing this will also cause any new post you create with `hexo new ...` to open automatically in your text editor.
+*Note: Installing this will also cause any new post you create with `hexo new ...` to open automatically in your text editor.*
+
+## rename
+
+```
+hexo rename <old title/slug> <-n | --new "new title">
+```
+
+`old title/slug` is one or more regular expressions to find a post or page. If more match your regex, a menu will be displayed
+
+`new title` is the new title for your post. In case you just want to rename the file, it will be `slugize`d automatically (it will get converted to lower case, and all special characters and spaces will be made url-friendly)
+
+After you've selected a file, you will be presented with another menu. From there you can choose whether to rename the filename, the title of the post, both, or cancel altogether.
 
 ## Installation
 
@@ -53,3 +67,5 @@ npm install --save hexo-easy-edit
 - All spaces in your `title` will be treated as dashes, just like Hexo does
 
 - This is useful primarily for myself, but might come in handy for others using Hexo who prefer to edit markdown files in their favorite local editor. Alternatively, you can use an administration plugin - check out [hexo-admin](https://github.com/jaredly/hexo-admin) or [hexo-hey](https://github.com/nihgwu/hexo-hey) if that's more up your alley
+
+- I was having some issues with making the renaming work and ran out of time. So the code is pretty crappy, but it works. I'll eventually clean it up.
