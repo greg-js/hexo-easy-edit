@@ -17,7 +17,9 @@
     "type": "MIT"
   },
   "dependencies": {
+    "async": "^1.5.0",
     "chalk": "^1.1.1",
+    "hexo-util": "^0.2.1",
     "inquirer": "^0.11.0",
     "moment": "^2.10.6",
     "open": "0.0.5"
