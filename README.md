@@ -7,7 +7,7 @@ It adds two command to the Hexo command-line interface (only usable when you are
 ## edit
 
 ```
-hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --category | --categories CATEGORY] [-d | --draft | --drafts] [-f | --folder SUBFOLDER] [-g | --gui] [-p | --page | --pages] [-t | --tag | --tags TAG]
+hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --category | --categories CATEGORY] [-d | --draft | --drafts] [-f | --folder SUBFOLDER] [-g | --gui] [-l | --layout] [-p | --page | --pages] [-t | --tag | --tags TAG]
 ```
 
 `title` is a regular expression (case insensitive and spaces are allowed) for matching the title of a post
@@ -24,11 +24,15 @@ hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --c
 
 `-g` or `--gui` (optional) is an option to open files using an associated GUI editor, rather than your terminal editor set in $EDITOR
 
+`-l` or `--layout` (optional) filters on posts/pages with a specific layout
+
 `-p` or `--page` (optional) selects pages instead of posts
 
 `-t` or `--tag` (optional) allows you to filter your posts on tag
 
 *Note: Installing this will also cause any new post you create with `hexo new ...` to open automatically in your text editor.*
+*Note: boolean options can be combined (for example `hexo edit -dp` to search for drafts that are pages)*
+*Note: Drafts will only appear in regular searches (those without the special draft option) if you have `render_drafts` set to true in `_config.yml`*
 
 ## rename
 
@@ -42,13 +46,15 @@ hexo rename <old title/slug> <-n | --new "new title">
 
 After you've selected a file, you will be presented with another menu. From there you can choose whether to rename the filename, the title of the post, both, or cancel altogether.
 
+*Note: I just did some more testing earlier and it seems that the command isn't working correctly and only renames either the title or the filename. I will get to it soon, but if you want to use it, just rename it twice, each separately, and it should work (and should still be faster than doing it manually). I will fix it soon in a patch though.*
+
 ## Installation
 
 ```
 npm install --save hexo-easy-edit
 ```
 
-## Notes
+## Info
 
 - It doesn't matter where in the hexo directory you are. As long as you're in one, your posts will be found
 
