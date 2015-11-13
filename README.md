@@ -32,7 +32,7 @@ hexo edit [title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --c
 
 *Note: Installing this will also cause any new post you create with `hexo new ...` to open automatically in your text editor.*
 *Note: boolean options can be combined (for example `hexo edit -dp` to search for drafts that are pages)*
-*Note: Drafts will only appear in regular searches (those without the special draft option) if you have `render_drafts` set to true in `_config.yml`*
+*Note: Drafts will only appear in regular searches (those without the special draft option) if you have `render_drafts` set to true in `_config.yml`. If it's set to false, you'll have to use the `--draft` option to filter on drafts because for some weird reason, a single letter option won't work in that particular case. Very strange..*
 
 ## rename
 
@@ -46,7 +46,15 @@ hexo rename <old title/slug> <-n | --new "new title">
 
 After you've selected a file, you will be presented with another menu. From there you can choose whether to rename the filename, the title of the post, both, or cancel altogether.
 
-*Note: I just did some more testing earlier and it seems that the command isn't working correctly and only renames either the title or the filename. I will get to it soon, but if you want to use it, just rename it twice, each separately, and it should work (and should still be faster than doing it manually). I will fix it soon in a patch though.*
+*Note: if you have set `render_drafts` to false in `_config.yml`, you won't be able to rename drafts. It works with that setting set to true or if you publish the post first though.
+
+## remove
+
+```
+hexo remove <search terms>
+```
+
+This command will look for a post, allow you to select one if more than one post is matched, ask you for a confirmation and then delete the selected post *and* its associated asset folder (if it exists).
 
 ## Installation
 

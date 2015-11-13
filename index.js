@@ -16,16 +16,20 @@ hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $E
     {name: '-f, --folder', desc: 'Name of subfolder to filter on.'},
     {name: '-g, --gui', desc: 'Open file with associated GUI text editor. Default is to open in terminal using $EDITOR. If no $EDITOR is found, it will fall back to gui mode.'},
     {name: '-l, --layout', desc: 'Only consider posts with a given layout'},
-    {name: '-p, --page', '--pages', desc: 'Only consider pages'},
+    {name: '-p, --page, --pages', desc: 'Only consider pages'},
     {name: '-t, --tag, --tags', desc: 'Tag to filter on.'},
   ],
 }, require('./lib/edit'));
 
 hexo.extend.console.register('rename', 'Rename a post or draft', {
-  desc: 'Rename a post or draft. Both post title and filename (and asset folder) will be renamed by default. Wrap in ',
+  desc: 'Rename a post or draft. Search for a post and set a new name with the -n or --new option, followed by the new title wrapped in single or double quotes',
   usage: '<old name> <-n | --new new name>',
   arguments: [
     {name: '-n, --new', desc: '(required) The new title. Wrap in single or double quotes if the title includes spaces.'},
   ],
 }, require('./lib/rename'));
-'use strict';
+
+hexo.extend.console.register('remove', 'Remove a post or draft', {
+  desc: 'Search for a post or draft and remove it.',
+  usage: '<search terms for a post to be deleted>',
+}, require('./lib/remove'));
