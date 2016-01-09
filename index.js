@@ -3,7 +3,7 @@
 require('./lib/extensions')(hexo);
 
 hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $EDITOR', {
-  desc: 'Edit a post or draft with your favorite $EDITOR',
+  desc: 'Edit a post or draft with your favorite $EDITOR. Filter on title (if applicable), before using optional arguments.',
   usage: '[title] [-a | --after MM-DD-YYYY] [-b | --before MM-DD-YYYY] [-c | --category CATEGORY] [-d | --draft | --drafts] [-f | --folder FOLDER] [-g | --gui] [-l | --layout LAYOUT] [-p | --page | --pages] [-t | --tag | --tags TAG]',
   arguments: [
     {name: 'title', desc: '(Part of) the title of a post. If more posts match this regex, a menu will be called.'},
@@ -24,7 +24,7 @@ hexo.extend.console.register('edit', 'Edit a post or draft with your favorite $E
 hexo.extend.console.register('rename', 'Rename a post or draft', {
   desc: 'Rename a post or draft. Search for a post and set a new name with the -n or --new option, followed by the new title wrapped in single or double quotes',
   usage: '<old name> <-n | --new new name>',
-  arguments: [
+  options: [
     {name: '-n, --new', desc: '(required) The new title. Wrap in single or double quotes if the title includes spaces.'},
   ],
 }, require('./lib/rename'));
@@ -33,3 +33,20 @@ hexo.extend.console.register('remove', 'Remove a post or draft', {
   desc: 'Search for a post or draft and remove it.',
   usage: '<search terms for a post to be deleted>',
 }, require('./lib/remove'));
+
+hexo.extend.console.register('isolate', 'Isolate a post or page by temporarily removing all others from the build process', {
+  desc: 'Move all posts to an ignored _exile subfolder, except for the one matching a given search term. If multiple posts match, a menu will be called. This can be useful for speeding up testing, but don\'t forget to use the integrate command to restore the exiled posts back to their previous location before deploying your site.',
+  usage: '[search term]',
+  options: [
+    {name: '-a, --all', desc: 'Stash all posts in _exile, including the one for which the pattern matches.'},
+  ],
+}, require('./lib/isolate'));
+
+hexo.extend.console.register('integrate', 'Restore isolated posts', {
+  desc: 'Restore a given post (or all posts) from _posts/_exile back to _posts.',
+  usage: '[search term]',
+  options: [
+    {name: '-a, --all', desc: 'Restore all posts and all pages in all subdirectories of the source folder. This will cause all other arguments to be ignored.'},
+    {name: '-f, --folder', desc: 'Specify a subdirectory of the source folder. By default, the _posts folder will be assumed'},
+  ],
+}, require('./lib/integrate'));
