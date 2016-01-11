@@ -43,10 +43,6 @@ hexo.extend.console.register('isolate', 'Isolate a post or page by temporarily r
 }, require('./lib/isolate'));
 
 hexo.extend.console.register('integrate', 'Restore isolated posts', {
-  desc: 'Restore a given post (or all posts) from _posts/_exile back to _posts.',
-  usage: '[search term]',
-  options: [
-    {name: '-a, --all', desc: 'Restore all posts and all pages in all subdirectories of the source folder. This will cause all other arguments to be ignored.'},
-    {name: '-f, --folder', desc: 'Specify a subdirectory of the source folder. By default, the _posts folder will be assumed'},
-  ],
+  desc: 'Restore all exiled posts from _posts/_exile back to _posts. Opposite of the isolate command.',
+  usage: '',
 }, require('./lib/integrate'));
