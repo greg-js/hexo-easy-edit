@@ -1,5 +1,7 @@
 # hexo-easy-edit
 
+**I decided to rename this plugin to [hexo-cli-extras](https://github.com/greg-js/hexo-cli-extras) to better reflect what it does. Please install the new plugin instead to get the latest version. This one will remain online for the handful of people who are using this though but won't receive any more updates in case I think of more features to implement.**
+
 This is a simple plugin for [Hexo](https://github.com/hexojs/hexo), a Node.js-based static site generator/blog framework.
 
 It adds two command to the Hexo command-line interface (only usable when you are somewhere inside a hexo folder):
